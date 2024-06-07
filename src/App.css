@@ -1,0 +1,26 @@
+
+.button{
+  padding: 2px;
+  border-radius: 50%;
+  background-color: black
+}
+
+.row{
+  display: flex;
+  height: 7.2px;
+  gap : 14.05px;
+  max-width: 75px;
+  align-items: center;
+}
+.Bada-container{
+  display: flex;
+  text-align: center;
+  gap: 20px;
+}
+.Container{
+  height: 75px;
+  width: 75px;
+  display: grid;
+  grid-template-columns: repeat(n, 1fr);
+  gap: 10px;
+}
