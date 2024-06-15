@@ -11,7 +11,6 @@ function handleClick(user, setUser, id, points, setPoints,A,setA,B,setB, canvasR
   const x = rect.left + rect.width / 2;
   const y = rect.top + rect.height / 2;
   const len = points.length;
-  console.log(points);
   if (len % 2 === 0) {
     setPoints([...points, { x, y }]);
   } else {
@@ -32,6 +31,7 @@ function handleClick(user, setUser, id, points, setPoints,A,setA,B,setB, canvasR
 
 function validDistance(point1, point2) {
   const val = calculateDistance(point1, point2);
+  console.log(val);
   if (val && val < 24) {
     return true;
   }
@@ -146,6 +146,13 @@ function checkForSquare(lastPoint, newPoint, points,user,setUser,A,setA,B,setB) 
   return flag;
 }
 
+const generateRows = (n) => {
+  let count = 1;
+  return Array.from({ length: n }, () => 
+    Array.from({ length: n }, () => (count++).toString())
+  );
+};
+
 export default function Board() {
   const [user, setUser] = useState(true);
   const [points, setPoints] = useState([]);
@@ -159,39 +166,32 @@ export default function Board() {
     canvas.height = window.innerHeight;
   }, []);
 
+  let n = 16;
+
+  const rows = generateRows(n);
+  
   return (
     <div className='Box'>
       <div className='Bada-container'>
         <div className="Container">
-          <div className="row">
-            <Button id="1" onClick={() => handleClick(user, setUser, "1", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="2" onClick={() => handleClick(user, setUser, "2", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="3" onClick={() => handleClick(user, setUser, "3", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="4" onClick={() => handleClick(user, setUser, "4", points, setPoints,A,setA,B,setB, canvasRef)} />
-          </div>
-          <div className="row">
-            <Button id="5" onClick={() => handleClick(user, setUser, "5", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="6" onClick={() => handleClick(user, setUser, "6", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="7" onClick={() => handleClick(user, setUser, "7", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="8" onClick={() => handleClick(user, setUser, "8", points, setPoints,A,setA,B,setB, canvasRef)} />
-          </div>
-          <div className="row">
-            <Button id="9" onClick={() => handleClick(user, setUser, "9", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="10" onClick={() => handleClick(user, setUser, "10", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="11" onClick={() => handleClick(user, setUser, "11", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="12" onClick={() => handleClick(user, setUser, "12", points, setPoints,A,setA,B,setB, canvasRef)} />
-          </div>
-          <div className="row">
-            <Button id="13" onClick={() => handleClick(user, setUser, "13", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="14" onClick={() => handleClick(user, setUser, "14", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="15" onClick={() => handleClick(user, setUser, "15", points, setPoints,A,setA,B,setB, canvasRef)} />
-            <Button id="16" onClick={() => handleClick(user, setUser, "16", points, setPoints,A,setA,B,setB, canvasRef)} />
-          </div>
+          {rows.map((row, rowIndex) => (
+            <div key={rowIndex} className="row">
+              {row.map((id) => (
+                <Button
+                  key={id}
+                  id={id}
+                  onClick={() => handleClick(user, setUser, id, points, setPoints, A, setA, B, setB, canvasRef)}
+                />
+              ))}
+            </div>
+          ))}
         </div>
-        <h2>Turn: {user ? "A" : "B"}</h2>
+        <div>
+          <h2>Turn: {user ? "A" : "B"}</h2>
+          <h3>Points of A : {A}</h3>
+          <h3>Points of B : {B}</h3>
+        </div>
       </div>
-      <h3>Points of A : {A}</h3>
-      <h3>Points of B : {B}</h3>
       <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, zIndex: -1 }} />
     </div>
   );
